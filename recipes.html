@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipes For Ingredients</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li>
+            <a href="./index.html">Home</a>
+          </li>
+          <li>
+            <a href="./enter-ingredients.html">Enter Ingredients</a>
+          </li>
+        </ul>
+      </nav>
+
+      <h1>Recipes For Ingredients</h1>
+    </header>
+
+    <main>
+      <div id="user-interface">
+        <div id="return"><button>Change your ingredients!</button></div>
+        <div id="filters">
+          <div id="categories">
+            <label for="categories">
+              Categories Ex:(Breakfast, Vegan, Dessert, etc)
+            </label>
+            <select name="categories" id="categories">
+              <option value="beef">Beef</option>
+              <option value="breakfast">Breakfast</option>
+              <option value="chicken">Chicken</option>
+              <option value="dessert">Dessert</option>
+              <option value="goat">Goat</option>
+              <option value="lamb">Lamb</option>
+              <option value="miscellaneous">Miscellaneous</option>
+              <option value="pasta">Pasta</option>
+              <option value="pork">Pork</option>
+              <option value="seafood">Seafood</option>
+              <option value="side">Side</option>
+              <option value="starter">Starter</option>
+              <option value="vegan">Vegan</option>
+              <option value="vegetarian">Vegetarian</option>
+            </select>
+          </div>
+          <div>
+            <label for="country-of-origin">Country of Origin:</label>
+            <select name="country-of-origin" id="country-of-origin">
+              <option value="american">American</option>
+              <option value="british">British</option>
+              <option value="canadian">Canadian</option>
+              <option value="chinese">Chinese</option>
+              <option value="croatian">Croatian</option>
+              <option value="dutch">Dutch</option>
+              <option value="egyptian">Egyptian</option>
+              <option value="filipino">Filipino</option>
+              <option value="french">French</option>
+              <option value="greek">Greek</option>
+              <option value="indian">Indian</option>
+              <option value="irish">Irish</option>
+              <option value="italian">Italian</option>
+              <option value="jamaican">Jamaican</option>
+              <option value="japanese">Japanese</option>
+              <option value="kenyan">Kenyan</option>
+              <option value="malaysian">Malaysian</option>
+              <option value="mexican">Mexican</option>
+              <option value="moroccan">Moroccan</option>
+              <option value="polish">Polish</option>
+              <option value="portuguese">Portuguese</option>
+              <option value="russian">Russian</option>
+              <option value="spanish">Spanish</option>
+              <option value="thai">Thai</option>
+              <option value="tunisian">Tunisian</option>
+              <option value="turkish">Turkish</option>
+              <option value="unknown">Unknown</option>
+              <option value="vietnamese">Vietnamese</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <p>Here are your recipes:</p>
+      <div id="recipes"></div>
+    </main>
+
+    <footer>
+      <p>
+        <cite>&copy; Recipes For Ingredients</cite>
+      </p>
+    </footer>
+  </body>
+</html>
