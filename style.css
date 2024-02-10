@@ -48,6 +48,10 @@ main {
   width: 100%;
 }
 
+#instructions > p {
+  width: 800px;
+}
+
 #submit {
   display: grid;
   grid-template-areas:
@@ -69,21 +73,48 @@ button {
   grid-area: button;
 }
 
-.recipes-container {
+#recipes-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
   align-items: center;
 }
 
 .recipe-container {
   border: 1px solid black;
-  width: 400px;
+  width: 800px;
   box-sizing: border-box;
   padding: 10px;
   margin: 10px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+.recipe-container > img,
+.return-to-ingredients {
+  cursor: pointer;
+  width: 400px;
+}
+
+.recipe-name {
+  color: blue;
+  cursor: pointer;
+}
+
+.recipe-info {
+  width: 800px;
+  border: 1px solid black;
+  margin-bottom: 10px;
+}
+
+.ingredient-list {
+  flex-direction: column;
+  gap: 10px;
+}
+
+.instruction {
+  padding: 20px;
+  text-align: justify;
 }
 
 footer {
@@ -91,6 +122,14 @@ footer {
   align-self: center;
   width: 1000px;
   text-align: center;
+}
+
+#recipes-container:not(:empty):before {
+  content: "Click on the recipe name or image for the instructions.";
+}
+
+.ingredient-list::before {
+  content: "Ingredients:";
 }
 
 .error::after {

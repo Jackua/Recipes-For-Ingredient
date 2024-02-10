@@ -82,7 +82,90 @@ function createRecipeDiv(recipe) {
   recipeDiv.appendChild(recipeImage);
 
   recipeDiv.classList.add("recipe-container");
+  recipeName.classList.add("recipe-name");
   recipeImage.classList.add("recipe-image");
 
+  recipeName.addEventListener("click", function (event) {
+    displayRecipe(event, recipe.idMeal, recipeDiv);
+  });
+  recipeImage.addEventListener("click", function (event) {
+    displayRecipe(event, recipe.idMeal, recipeDiv);
+  });
   return recipeDiv;
+}
+
+async function displayRecipe(event, mealID, recipeDiv) {
+  mainContainer.replaceChildren();
+
+  const enterNewIngredient = document.createElement("p");
+  enterNewIngredient.innerText =
+    "Click here to go back and enter a new ingredient.";
+  enterNewIngredient.classList.add("return-to-ingredients");
+  enterNewIngredient.addEventListener("click", returnToIngredients);
+
+  mainContainer.appendChild(enterNewIngredient);
+  mainContainer.appendChild(recipeDiv);
+  await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealID}`)
+    .then((response) => {
+      response.json().then((data) => {
+        const recipeInfo = data.meals[0];
+
+        const firstIngredient = Object.keys(recipeInfo).findIndex(
+          (str) => str === "strIngredient1"
+        );
+        const lastIngredient = Object.keys(recipeInfo).findIndex(
+          (str) => str === "strIngredient20"
+        );
+
+        const ingredientList = Object.keys(recipeInfo)
+          .slice(firstIngredient, lastIngredient)
+          .filter((ingredient) => recipeInfo[ingredient] !== "");
+
+        const firstMeasurement = Object.keys(recipeInfo).findIndex(
+          (str) => str === "strMeasure1"
+        );
+        const lastMeasurement = Object.keys(recipeInfo).findIndex(
+          (str) => str === "strMeasure20"
+        );
+
+        const measurementList = Object.keys(recipeInfo)
+          .slice(firstMeasurement, lastMeasurement)
+          .filter((measurement) => recipeInfo[measurement] !== "");
+
+        const recipeIngredients = document.createElement("ul");
+
+        for (let index = 0; index < ingredientList.length; index++) {
+          const ingredient = recipeInfo[ingredientList[index]];
+          const measurement = recipeInfo[measurementList[index]];
+          const ingredientMeasurement = document.createElement("li");
+          ingredientMeasurement.innerText = `${ingredient} (${measurement})`;
+          recipeIngredients.appendChild(ingredientMeasurement);
+        }
+
+        const instruction = document.createElement("div");
+        const instructionTitle = document.createElement("p");
+        instructionTitle.innerText = "Instructions: ";
+        const recipeInstruction = document.createElement("p");
+        recipeInstruction.innerText = recipeInfo.strInstructions;
+        instruction.appendChild(instructionTitle);
+        instruction.appendChild(recipeInstruction);
+        instruction.classList.add("instruction");
+
+        const recipeInfoDiv = document.createElement("div");
+        recipeInfoDiv.classList.add("recipe-info");
+        recipeIngredients.classList.add("ingredient-list");
+        recipeInfoDiv.appendChild(recipeIngredients);
+        recipeInfoDiv.appendChild(instruction);
+        mainContainer.appendChild(recipeInfoDiv);
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+function returnToIngredients() {
+  mainContainer.replaceChildren();
+  mainContainer.appendChild(submitContainer);
+  mainContainer.appendChild(recipesContainer);
 }
