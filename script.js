@@ -81,5 +81,8 @@ function createRecipeDiv(recipe) {
   recipeDiv.appendChild(recipeName);
   recipeDiv.appendChild(recipeImage);
 
+  recipeDiv.classList.add("recipe-container");
+  recipeImage.classList.add("recipe-image");
+
   return recipeDiv;
 }

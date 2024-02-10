@@ -1,5 +1,101 @@
+html {
+  font-size: large;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+  align-items: center;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: black solid;
+  width: 1000px;
+}
+
+nav {
+  align-self: flex-start;
+  width: 100%;
+  border-bottom: black solid;
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+a {
+  font-size: x-large;
+  color: blue;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  max-width: 1000px;
+  align-self: center;
+  border: black solid;
+  border-top: none;
+  border-bottom: none;
+  width: 100%;
+}
+
+#submit {
+  display: grid;
+  grid-template-areas:
+    "label label label"
+    "input input button";
+  width: 400px;
+  margin: 10px;
+}
+
+label {
+  grid-area: label;
+}
+
+input {
+  grid-area: input;
+}
+
+button {
+  grid-area: button;
+}
+
+.recipes-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.recipe-container {
+  border: 1px solid black;
+  width: 400px;
+  box-sizing: border-box;
+  padding: 10px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  border: black solid;
+  align-self: center;
+  width: 1000px;
+  text-align: center;
+}
+
 .error::after {
   color: red;
+  grid-area: error;
 }
 
 .empty::after {
