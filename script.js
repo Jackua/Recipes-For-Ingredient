@@ -3,6 +3,7 @@ let ingredientsDataList = document.querySelector("datalist#ingredients");
 let enterIngredients = document.querySelector("#enter-ingredients");
 let addIngredients = document.querySelector("#add-ingredients");
 let enteredIngredients = document.querySelector("#entered-ingredients");
+let submitContainer = document.querySelector("#submit");
 let submittedIngredients = new Array();
 
 async function getIngredients() {
@@ -11,7 +12,7 @@ async function getIngredients() {
   )
     .then((response) => {
       response.json().then((data) => {
-        ingredients = data.meals;
+        ingredients = data.meals.map((meal) => meal.strIngredient);
       });
     })
     .catch((error) => {
@@ -28,25 +29,24 @@ enterIngredients.addEventListener("input", (event) => {
   if (event.target.value !== "") {
     ingredients
       .filter((ingredient) =>
-        ingredient.strIngredient
-          .toUpperCase()
-          .includes(event.target.value.toUpperCase())
+        ingredient.toUpperCase().includes(event.target.value.toUpperCase())
       )
       .forEach((ingredient) => {
         const ingredientElement = document.createElement("option");
-        ingredientElement.value = ingredient.strIngredient;
+        ingredientElement.value = ingredient;
         ingredientsDataList.appendChild(ingredientElement);
       });
   }
 });
 
 addIngredients.addEventListener("click", (event) => {
+  submitContainer.classList.remove("error", "duplicate", "empty", "invalid");
   if (submittedIngredients.includes(enterIngredients.value)) {
-    console.log("already exist");
+    submitContainer.classList.add("error", "duplicate");
   } else if (enterIngredients.value === "") {
-    console.log("empty");
+    submitContainer.classList.add("error", "empty");
   } else if (!ingredients.includes(enterIngredients.value)) {
-    console.log("does not exist");
+    submitContainer.classList.add("error", "invalid");
   } else {
     submittedIngredients.push(enterIngredients.value);
     const addedIngredient = document.createElement("div");
@@ -61,7 +61,7 @@ addIngredients.addEventListener("click", (event) => {
     deleteButton.addEventListener("click", () => {
       const parent = deleteButton.parentNode;
       parent.parentNode.removeChild(parent);
-      submittedIngredients.filter(
+      submittedIngredients = submittedIngredients.filter(
         (submittedIngredient) =>
           submittedIngredient !== ingredientName.innerText
       );

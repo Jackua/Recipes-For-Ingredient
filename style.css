@@ -1,0 +1,15 @@
+.error::after {
+  color: red;
+}
+
+.empty::after {
+  content: "Please enter an ingredient before clicking the add ingredients button.";
+}
+
+.invalid::after {
+  content: "That ingredient does not exist on our website, please enter a different ingredient.";
+}
+
+.duplicate::after {
+  content: "That ingredient was already added, please enter a different ingredient.";
+}
