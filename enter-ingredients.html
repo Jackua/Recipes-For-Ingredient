@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Recipes For Ingredients</title>
+    <script defer src="script.js"></script>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <header>
@@ -25,12 +27,17 @@
       <div id="submit">
         <label for="enter-ingredients">Enter your ingredients here:</label>
         <input
-          type="search"
+          type="text"
           name="enter-ingredients"
           id="enter-ingredients"
+          list="ingredients"
           placeholder="Matching ingredients will be suggested as you type!"
         />
-        <button>Get your recipes!</button>
+        <datalist id="ingredients"></datalist>
+        <button id="add-ingredients">Add Ingredients</button>
+      </div>
+      <div id="get-recipes-div">
+        <button id="get-recipes">Get your recipes!</button>
       </div>
       <p>Your list of entered ingredients:</p>
       <div id="entered-ingredients"></div>
