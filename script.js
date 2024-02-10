@@ -1,15 +1,15 @@
 let ingredients = null;
-let ingredientsDataList = document.querySelector("datalist#ingredients");
-let enterIngredients = document.querySelector("#enter-ingredients");
-let addIngredients = document.querySelector("#add-ingredients");
-let enteredIngredients = document.querySelector("#entered-ingredients");
+let recipes = null;
+let ingredientsDataList = document.querySelector("datalist#ingredient");
+let enterIngredients = document.querySelector("#enter-ingredient");
+let enteredIngredients = document.querySelector("#entered-ingredient");
+let getRecipes = document.querySelector("#get-recipes");
+let recipesContainer = document.querySelector("#recipes-container");
 let submitContainer = document.querySelector("#submit");
-let submittedIngredients = new Array();
+let mainContainer = document.querySelector("main");
 
-async function getIngredients() {
-  const response = await fetch(
-    "https://www.themealdb.com/api/json/v1/1/list.php?i=list"
-  )
+async function fetchIngredients() {
+  await fetch("https://www.themealdb.com/api/json/v1/1/list.php?i=list")
     .then((response) => {
       response.json().then((data) => {
         ingredients = data.meals.map((meal) => meal.strIngredient);
@@ -20,8 +20,26 @@ async function getIngredients() {
     });
 }
 
+async function fetchRecipes(ingredient) {
+  const converted = ingredient.toLowerCase().replaceAll(" ", "_");
+  await fetch(
+    `https://www.themealdb.com/api/json/v1/1/filter.php?i=${converted}`
+  )
+    .then((response) => {
+      response.json().then((data) => {
+        recipes = data.meals;
+        recipes.forEach((recipe) => {
+          recipesContainer.appendChild(createRecipeDiv(recipe));
+        });
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  getIngredients();
+  fetchIngredients();
 });
 
 enterIngredients.addEventListener("input", (event) => {
@@ -39,36 +57,29 @@ enterIngredients.addEventListener("input", (event) => {
   }
 });
 
-addIngredients.addEventListener("click", (event) => {
-  submitContainer.classList.remove("error", "duplicate", "empty", "invalid");
-  if (submittedIngredients.includes(enterIngredients.value)) {
-    submitContainer.classList.add("error", "duplicate");
-  } else if (enterIngredients.value === "") {
+getRecipes.addEventListener("click", (event) => {
+  submitContainer.classList.remove("error", "empty", "invalid");
+  if (enterIngredients.value === "") {
     submitContainer.classList.add("error", "empty");
   } else if (!ingredients.includes(enterIngredients.value)) {
     submitContainer.classList.add("error", "invalid");
   } else {
-    submittedIngredients.push(enterIngredients.value);
-    const addedIngredient = document.createElement("div");
-    addedIngredient.classList.add("added-ingredient");
-
-    const ingredientName = document.createElement("p");
-    ingredientName.innerText = enterIngredients.value;
-
-    const deleteButton = document.createElement("button");
-    deleteButton.innerText = "Delete";
-
-    deleteButton.addEventListener("click", () => {
-      const parent = deleteButton.parentNode;
-      parent.parentNode.removeChild(parent);
-      submittedIngredients = submittedIngredients.filter(
-        (submittedIngredient) =>
-          submittedIngredient !== ingredientName.innerText
-      );
-    });
-
-    addedIngredient.appendChild(ingredientName);
-    addedIngredient.appendChild(deleteButton);
-    enteredIngredients.appendChild(addedIngredient);
+    recipesContainer.replaceChildren();
+    fetchRecipes(enterIngredients.value);
   }
 });
+
+function createRecipeDiv(recipe) {
+  const recipeDiv = document.createElement("div");
+
+  const recipeName = document.createElement("p");
+  recipeName.innerText = recipe.strMeal;
+
+  const recipeImage = document.createElement("img");
+  recipeImage.src = recipe.strMealThumb;
+
+  recipeDiv.appendChild(recipeName);
+  recipeDiv.appendChild(recipeImage);
+
+  return recipeDiv;
+}

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Recipes For Ingredients</title>
+    <title>Recipes For Ingredient</title>
     <script defer src="script.js"></script>
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -15,38 +15,34 @@
             <a href="./index.html">Home</a>
           </li>
           <li>
-            <a href="./enter-ingredients.html">Enter Ingredients</a>
+            <a href="./enter-ingredient.html">Enter Ingredient</a>
           </li>
         </ul>
       </nav>
 
-      <h1>Recipes For Ingredients</h1>
+      <h1>Recipes For Ingredient</h1>
     </header>
 
     <main>
       <div id="submit">
-        <label for="enter-ingredients">Enter your ingredients here:</label>
+        <label for="enter-ingredient">Enter your ingredient here:</label>
         <input
           type="text"
-          name="enter-ingredients"
-          id="enter-ingredients"
-          list="ingredients"
-          placeholder="Ingredients will be suggested as you type!"
+          name="enter-ingredient"
+          id="enter-ingredient"
+          list="ingredient"
+          placeholder="Ingredient will be suggested as you type!"
           required
         />
-        <datalist id="ingredients"></datalist>
-        <button id="add-ingredients">Add Ingredients</button>
-      </div>
-      <div id="get-recipes-div">
+        <datalist id="ingredient"></datalist>
         <button id="get-recipes">Get your recipes!</button>
       </div>
-      <p>Your list of entered ingredients:</p>
-      <div id="entered-ingredients"></div>
+      <div id="recipes-container"></div>
     </main>
 
     <footer>
       <p>
-        <cite>&copy; Recipes For Ingredients</cite>
+        <cite>&copy; Recipes For Ingredient</cite>
       </p>
     </footer>
   </body>

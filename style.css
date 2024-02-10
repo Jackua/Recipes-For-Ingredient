@@ -3,7 +3,7 @@
 }
 
 .empty::after {
-  content: "Please enter an ingredient before clicking the add ingredients button.";
+  content: "Please enter an ingredient before clicking the get your recipes button.";
 }
 
 .invalid::after {
