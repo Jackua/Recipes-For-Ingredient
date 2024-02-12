@@ -71,19 +71,28 @@ getRecipes.addEventListener("click", (event) => {
 
 function createRecipeDiv(recipe) {
   const recipeDiv = document.createElement("div");
-
+  const nameDiv = document.createElement("div");
   const recipeName = document.createElement("p");
   recipeName.innerText = recipe.strMeal;
 
   const recipeImage = document.createElement("img");
   recipeImage.src = recipe.strMealThumb;
+  recipeImage.style.display = "block";
 
-  recipeDiv.appendChild(recipeName);
+  recipeDiv.appendChild(nameDiv);
+  nameDiv.appendChild(recipeName);
   recipeDiv.appendChild(recipeImage);
 
   recipeDiv.classList.add("recipe-container");
+  nameDiv.classList.add("name-container");
   recipeName.classList.add("recipe-name");
   recipeImage.classList.add("recipe-image");
+
+  nameDiv.addEventListener("click", function (event) {
+    console.log(recipeImage.style.display);
+    recipeImage.style.display =
+      recipeImage.style.display === "block" ? "none" : "block";
+  });
 
   recipeName.addEventListener("click", function (event) {
     displayRecipe(event, recipe.idMeal, recipeDiv);
@@ -105,6 +114,7 @@ async function displayRecipe(event, mealID, recipeDiv) {
 
   mainContainer.appendChild(enterNewIngredient);
   mainContainer.appendChild(recipeDiv);
+
   await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealID}`)
     .then((response) => {
       response.json().then((data) => {
@@ -157,6 +167,7 @@ async function displayRecipe(event, mealID, recipeDiv) {
         recipeInfoDiv.appendChild(recipeIngredients);
         recipeInfoDiv.appendChild(instruction);
         mainContainer.appendChild(recipeInfoDiv);
+        recipeDiv.children[1].style.display = "block";
       });
     })
     .catch((error) => {

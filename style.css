@@ -56,7 +56,8 @@ main {
   display: grid;
   grid-template-areas:
     "label label label"
-    "input input button";
+    "input input button"
+    "error error error";
   width: 400px;
   margin: 10px;
 }
@@ -83,11 +84,25 @@ button {
   border: 1px solid black;
   width: 800px;
   box-sizing: border-box;
-  padding: 10px;
   margin: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.name-container {
+  width: 100%;
+  background-color: lightgrey;
+  display: flex;
+  justify-content: center;
+}
+
+.name-container:hover {
+  background-color: slategrey;
+}
+
+.recipe-container > img {
+  padding: 10px;
 }
 
 .recipe-container > img,
@@ -96,9 +111,15 @@ button {
   width: 400px;
 }
 
+.return-to-ingredients {
+  color: blue;
+  text-decoration: underline;
+}
+
 .recipe-name {
   color: blue;
   cursor: pointer;
+  width: fit-content;
 }
 
 .recipe-info {
