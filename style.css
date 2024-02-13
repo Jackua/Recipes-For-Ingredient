@@ -95,6 +95,7 @@ button {
   background-color: lightgrey;
   display: flex;
   justify-content: center;
+  cursor: pointer;
 }
 
 .name-container:hover {

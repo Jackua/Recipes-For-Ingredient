@@ -8,17 +8,37 @@ let recipesContainer = document.querySelector("#recipes-container");
 let submitContainer = document.querySelector("#submit");
 let mainContainer = document.querySelector("main");
 
-async function fetchIngredients() {
-  await fetch("https://www.themealdb.com/api/json/v1/1/list.php?i=list")
-    .then((response) => {
-      response.json().then((data) => {
-        ingredients = data.meals.map((meal) => meal.strIngredient);
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-}
+// async function fetchIngredients() {
+//   await fetch("https://www.themealdb.com/api/json/v1/1/list.php?i=list")
+//     .then((response) => {
+//       response.json().then((data) => {
+//         ingredients = data.meals.map((meal) => meal.strIngredient);
+//       });
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//     });
+// }
+
+// document.addEventListener("DOMContentLoaded", () => {
+//   fetchIngredients();
+// });
+ingredients = [
+  "Brown Sugar",
+  "Caster Sugar",
+  "Coco Sugar",
+  "Dark Brown Sugar",
+  "Dark Soft Brown Sugar",
+  "Demerara Sugar",
+  "Granulated Sugar",
+  "Muscovado Sugar",
+  "Sugar",
+  "Icing Sugar",
+  "Sugar Snap Peas",
+  "Light Brown Soft Sugar",
+  "Dark Brown Soft Sugar",
+  "Powdered Sugar",
+];
 
 async function fetchRecipes(ingredient) {
   const converted = ingredient.toLowerCase().replaceAll(" ", "_");
@@ -37,10 +57,6 @@ async function fetchRecipes(ingredient) {
       console.log(error);
     });
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  fetchIngredients();
-});
 
 enterIngredients.addEventListener("input", (event) => {
   ingredientsDataList.replaceChildren();
