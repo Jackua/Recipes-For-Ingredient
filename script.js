@@ -48,9 +48,14 @@ async function fetchRecipes(ingredient) {
     .then((response) => {
       response.json().then((data) => {
         recipes = data.meals;
-        recipes.forEach((recipe) => {
-          recipesContainer.appendChild(createRecipeDiv(recipe));
-        });
+        if (recipes === null) {
+          submitContainer.classList.add("error", "null");
+        } else {
+          submitContainer.classList.remove("error", "null");
+          recipes.forEach((recipe) => {
+            recipesContainer.appendChild(createRecipeDiv(recipe));
+          });
+        }
       });
     })
     .catch((error) => {
@@ -105,7 +110,6 @@ function createRecipeDiv(recipe) {
   recipeImage.classList.add("recipe-image");
 
   nameDiv.addEventListener("click", function (event) {
-    console.log(recipeImage.style.display);
     recipeImage.style.display =
       recipeImage.style.display === "block" ? "none" : "block";
   });

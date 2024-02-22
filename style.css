@@ -170,3 +170,7 @@ footer {
 .duplicate::after {
   content: "That ingredient was already added, please enter a different ingredient.";
 }
+
+.null::after {
+  content: "That ingredient has no recipes, please try another ingredients.";
+}
