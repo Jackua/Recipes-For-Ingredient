@@ -8,37 +8,22 @@ let recipesContainer = document.querySelector("#recipes-container");
 let submitContainer = document.querySelector("#submit");
 let mainContainer = document.querySelector("main");
 
-// async function fetchIngredients() {
-//   await fetch("https://www.themealdb.com/api/json/v1/1/list.php?i=list")
-//     .then((response) => {
-//       response.json().then((data) => {
-//         ingredients = data.meals.map((meal) => meal.strIngredient);
-//       });
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//     });
-// }
+// Send the request to the backend to get data from my partner's microservice
+async function fetchIngredients() {
+  await fetch("/microservice/ingrediet")
+    .then((response) => {
+      response.json().then((data) => {
+        ingredients = data.meals.map((meal) => meal.strIngredient);
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
 
-// document.addEventListener("DOMContentLoaded", () => {
-//   fetchIngredients();
-// });
-ingredients = [
-  "Brown Sugar",
-  "Caster Sugar",
-  "Coco Sugar",
-  "Dark Brown Sugar",
-  "Dark Soft Brown Sugar",
-  "Demerara Sugar",
-  "Granulated Sugar",
-  "Muscovado Sugar",
-  "Sugar",
-  "Icing Sugar",
-  "Sugar Snap Peas",
-  "Light Brown Soft Sugar",
-  "Dark Brown Soft Sugar",
-  "Powdered Sugar",
-];
+document.addEventListener("DOMContentLoaded", () => {
+  fetchIngredients();
+});
 
 async function fetchRecipes(ingredient) {
   const converted = ingredient.toLowerCase().replaceAll(" ", "_");
