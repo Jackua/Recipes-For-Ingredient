@@ -1,12 +1,42 @@
 let ingredients = null;
-let recipes = null;
 let ingredientsDataList = document.querySelector("datalist#ingredient");
-let enterIngredients = document.querySelector("#enter-ingredient");
-let enteredIngredients = document.querySelector("#entered-ingredient");
+let enterIngredient = document.querySelector("#enter-ingredient");
 let getRecipes = document.querySelector("#get-recipes");
 let recipesContainer = document.querySelector("#recipes-container");
 let submitContainer = document.querySelector("#submit");
 let mainContainer = document.querySelector("main");
+
+document.addEventListener("DOMContentLoaded", () => {
+  fetchIngredients();
+});
+
+enterIngredient.addEventListener("input", (event) => {
+  ingredientsDataList.replaceChildren();
+  if (event.target.value !== "") {
+    ingredients
+      .filter((ingredient) =>
+        ingredient.toUpperCase().includes(event.target.value.toUpperCase())
+      )
+      .forEach((ingredient) => {
+        const ingredientElement = document.createElement("option");
+        ingredientElement.value = ingredient;
+        ingredientsDataList.appendChild(ingredientElement);
+      });
+  }
+});
+
+getRecipes.addEventListener("click", (event) => {
+  submitContainer.classList.remove("error", "empty", "invalid");
+  if (enterIngredient.value === "") {
+    submitContainer.classList.add("error", "empty");
+  } else if (!ingredients.includes(enterIngredient.value)) {
+    submitContainer.classList.add("error", "invalid");
+  } else {
+    recipesContainer.replaceChildren();
+    const converted = enterIngredient.value.toLowerCase().replaceAll(" ", "_");
+    fetchRecipes(converted);
+  }
+});
 
 // Send the request to the backend to get data from my partner's microservice
 async function fetchIngredients() {
@@ -21,13 +51,9 @@ async function fetchIngredients() {
     });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  fetchIngredients();
-});
-
 async function fetchRecipes(ingredient) {
   await fetch(
-    `https://www.themealdb.com/api/json/v1/1/filter.php?i=${converted}`
+    `https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`
   )
     .then((response) => {
       response.json().then((data) => {
@@ -56,34 +82,6 @@ function addRecipes(recipes) {
     recipesContainer.appendChild(createRecipeDiv(recipe));
   });
 }
-
-enterIngredients.addEventListener("input", (event) => {
-  ingredientsDataList.replaceChildren();
-  if (event.target.value !== "") {
-    ingredients
-      .filter((ingredient) =>
-        ingredient.toUpperCase().includes(event.target.value.toUpperCase())
-      )
-      .forEach((ingredient) => {
-        const ingredientElement = document.createElement("option");
-        ingredientElement.value = ingredient;
-        ingredientsDataList.appendChild(ingredientElement);
-      });
-  }
-});
-
-getRecipes.addEventListener("click", (event) => {
-  submitContainer.classList.remove("error", "empty", "invalid");
-  if (enterIngredients.value === "") {
-    submitContainer.classList.add("error", "empty");
-  } else if (!ingredients.includes(enterIngredients.value)) {
-    submitContainer.classList.add("error", "invalid");
-  } else {
-    recipesContainer.replaceChildren();
-    const converted = ingredient.toLowerCase().replaceAll(" ", "_");
-    fetchRecipes(converted);
-  }
-});
 
 function createRecipeDiv(recipe) {
   const recipeDiv = document.createElement("div");
