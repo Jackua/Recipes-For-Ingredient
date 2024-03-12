@@ -85,35 +85,58 @@ function addRecipes(recipes) {
 
 function createRecipeDiv(recipe) {
   const recipeDiv = document.createElement("div");
-  const nameDiv = document.createElement("div");
-  const recipeName = document.createElement("p");
-  recipeName.innerText = recipe.strMeal;
-
-  const recipeImage = document.createElement("img");
-  recipeImage.src = recipe.strMealThumb;
-  recipeImage.style.display = "block";
-
-  recipeDiv.appendChild(nameDiv);
-  nameDiv.appendChild(recipeName);
-  recipeDiv.appendChild(recipeImage);
-
   recipeDiv.classList.add("recipe-container");
+
+  recipeDiv.appendChild(createNameDiv(recipe));
+  recipeDiv.appendChild(createImageDiv(recipe));
+
+  return recipeDiv;
+}
+
+function createNameDiv(recipe) {
+  const nameDiv = document.createElement("div");
+
   nameDiv.classList.add("name-container");
-  recipeName.classList.add("recipe-name");
-  recipeImage.classList.add("recipe-image");
+
+  nameDiv.appendChild(createRecipeTitle(recipe));
 
   nameDiv.addEventListener("click", function (event) {
-    recipeImage.style.display =
-      recipeImage.style.display === "block" ? "none" : "block";
+    if (event.target.classList.contains("name-container")) {
+      const imageDiv = event.target.nextElementSibling;
+      imageDiv.style.display =
+        imageDiv.style.display === "block" ? "none" : "block";
+    }
   });
 
+  return nameDiv;
+}
+
+function createRecipeTitle(recipe) {
+  const recipeName = document.createElement("p");
+  recipeName.classList.add("recipe-name");
+  recipeName.innerText = recipe.strMeal;
+
   recipeName.addEventListener("click", function (event) {
-    displayRecipe(event, recipe.idMeal, recipeDiv);
+    const recipeContainer = event.target.parentElement.parentElement;
+    displayRecipe(event, recipe.idMeal, recipeContainer);
   });
-  recipeImage.addEventListener("click", function (event) {
-    displayRecipe(event, recipe.idMeal, recipeDiv);
+
+  return recipeName;
+}
+
+function createImageDiv(recipe) {
+  const imageDiv = document.createElement("img");
+
+  imageDiv.src = recipe.strMealThumb;
+  imageDiv.style.display = "block";
+  imageDiv.classList.add("recipe-image");
+
+  imageDiv.addEventListener("click", function (event) {
+    const recipeContainer = event.target.parentElement;
+    displayRecipe(event, recipe.idMeal, recipeContainer);
   });
-  return recipeDiv;
+
+  return imageDiv;
 }
 
 async function displayRecipe(event, mealID, recipeDiv) {
