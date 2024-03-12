@@ -12,7 +12,9 @@ async function runServer() {
   await sock.bind("tcp://127.0.0.1:5555");
 
   for await (const [msg] of sock) {
+    await sock.send("Requesting Ingredients");
     ingredients = msg.toString();
+    console.log("Ingredients recieved!");
   }
 }
 runServer();
