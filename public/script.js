@@ -26,26 +26,35 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function fetchRecipes(ingredient) {
-  const converted = ingredient.toLowerCase().replaceAll(" ", "_");
   await fetch(
     `https://www.themealdb.com/api/json/v1/1/filter.php?i=${converted}`
   )
     .then((response) => {
       response.json().then((data) => {
-        recipes = data.meals;
-        if (recipes === null) {
-          submitContainer.classList.add("error", "null");
-        } else {
-          submitContainer.classList.remove("error", "null");
-          recipes.forEach((recipe) => {
-            recipesContainer.appendChild(createRecipeDiv(recipe));
-          });
+        if (checkForRecipes(data.meals)) {
+          addRecipes(data.meals);
         }
       });
     })
     .catch((error) => {
       console.log(error);
     });
+}
+
+function checkForRecipes(recipes) {
+  if (recipes === null) {
+    submitContainer.classList.add("error", "null");
+    return false;
+  } else {
+    submitContainer.classList.remove("error", "null");
+    return true;
+  }
+}
+
+function addRecipes(recipes) {
+  recipes.forEach((recipe) => {
+    recipesContainer.appendChild(createRecipeDiv(recipe));
+  });
 }
 
 enterIngredients.addEventListener("input", (event) => {
@@ -71,7 +80,8 @@ getRecipes.addEventListener("click", (event) => {
     submitContainer.classList.add("error", "invalid");
   } else {
     recipesContainer.replaceChildren();
-    fetchRecipes(enterIngredients.value);
+    const converted = ingredient.toLowerCase().replaceAll(" ", "_");
+    fetchRecipes(converted);
   }
 });
 
