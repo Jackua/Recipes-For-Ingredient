@@ -137,7 +137,6 @@ function createImageDiv(recipe) {
 
 async function displayRecipe(event, mealID, recipeDiv) {
   mainContainer.replaceChildren();
-
   mainContainer.appendChild(createReturnLink());
   mainContainer.appendChild(recipeDiv);
 
@@ -145,39 +144,7 @@ async function displayRecipe(event, mealID, recipeDiv) {
     .then((response) => {
       response.json().then((data) => {
         const recipeInfo = data.meals[0];
-
-        const firstIngredient = Object.keys(recipeInfo).findIndex(
-          (str) => str === "strIngredient1"
-        );
-        const lastIngredient = Object.keys(recipeInfo).findIndex(
-          (str) => str === "strIngredient20"
-        );
-
-        const ingredientList = Object.keys(recipeInfo)
-          .slice(firstIngredient, lastIngredient)
-          .filter((ingredient) => recipeInfo[ingredient] !== "");
-
-        const firstMeasurement = Object.keys(recipeInfo).findIndex(
-          (str) => str === "strMeasure1"
-        );
-        const lastMeasurement = Object.keys(recipeInfo).findIndex(
-          (str) => str === "strMeasure20"
-        );
-
-        const measurementList = Object.keys(recipeInfo)
-          .slice(firstMeasurement, lastMeasurement)
-          .filter((measurement) => recipeInfo[measurement] !== "");
-
-        const recipeIngredients = document.createElement("ul");
-
-        for (let index = 0; index < ingredientList.length; index++) {
-          const ingredient = recipeInfo[ingredientList[index]];
-          const measurement = recipeInfo[measurementList[index]];
-          const ingredientMeasurement = document.createElement("li");
-          ingredientMeasurement.innerText = `${ingredient} (${measurement})`;
-          recipeIngredients.appendChild(ingredientMeasurement);
-        }
-
+        const ingredientsDiv = createIngredientsDiv(recipeInfo);
         const instruction = document.createElement("div");
         const instructionTitle = document.createElement("p");
         instructionTitle.innerText = "Instructions: ";
@@ -189,8 +156,8 @@ async function displayRecipe(event, mealID, recipeDiv) {
 
         const recipeInfoDiv = document.createElement("div");
         recipeInfoDiv.classList.add("recipe-info");
-        recipeIngredients.classList.add("ingredient-list");
-        recipeInfoDiv.appendChild(recipeIngredients);
+        ingredientsDiv.classList.add("ingredient-list");
+        recipeInfoDiv.appendChild(ingredientsDiv);
         recipeInfoDiv.appendChild(instruction);
         mainContainer.appendChild(recipeInfoDiv);
         recipeDiv.children[1].style.display = "block";
@@ -209,6 +176,33 @@ function createReturnLink() {
   enterNewIngredient.addEventListener("click", returnToIngredients);
 
   return enterNewIngredient;
+}
+
+function createIngredientsDiv(recipeInfo) {
+  const recipeInfoList = Object.keys(recipeInfo);
+  const ingredientList = createList("ingredient", recipeInfoList, recipeInfo);
+  const measurementList = createList("measurement", recipeInfoList, recipeInfo);
+  const ingredientsDiv = document.createElement("ul");
+
+  for (let index = 0; index < ingredientList.length; index++) {
+    const ingredient = recipeInfo[ingredientList[index]];
+    const measurement = recipeInfo[measurementList[index]];
+    const ingredientMeasurement = document.createElement("li");
+    ingredientMeasurement.innerText = `${ingredient} (${measurement})`;
+    ingredientsDiv.appendChild(ingredientMeasurement);
+  }
+
+  return ingredientsDiv;
+}
+
+function createList(item, list, obj) {
+  const firstIndex = list.indexOf(
+    item === "ingredient" ? "strIngredient1" : "strMeasure1"
+  );
+  const lastIndex = list.indexOf(
+    item === "ingredient" ? "strIngredient20" : "strMeasure20"
+  );
+  return list.slice(firstIndex, lastIndex).filter((item) => obj[item] !== "");
 }
 
 function returnToIngredients() {
