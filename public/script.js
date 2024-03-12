@@ -86,7 +86,6 @@ function addRecipes(recipes) {
 function createRecipeDiv(recipe) {
   const recipeDiv = document.createElement("div");
   recipeDiv.classList.add("recipe-container");
-
   recipeDiv.appendChild(createNameDiv(recipe));
   recipeDiv.appendChild(createImageDiv(recipe));
 
@@ -95,9 +94,7 @@ function createRecipeDiv(recipe) {
 
 function createNameDiv(recipe) {
   const nameDiv = document.createElement("div");
-
   nameDiv.classList.add("name-container");
-
   nameDiv.appendChild(createRecipeTitle(recipe));
 
   nameDiv.addEventListener("click", function (event) {
@@ -126,7 +123,6 @@ function createRecipeTitle(recipe) {
 
 function createImageDiv(recipe) {
   const imageDiv = document.createElement("img");
-
   imageDiv.src = recipe.strMealThumb;
   imageDiv.style.display = "block";
   imageDiv.classList.add("recipe-image");
@@ -142,13 +138,7 @@ function createImageDiv(recipe) {
 async function displayRecipe(event, mealID, recipeDiv) {
   mainContainer.replaceChildren();
 
-  const enterNewIngredient = document.createElement("p");
-  enterNewIngredient.innerText =
-    "Click here to go back and enter a new ingredient.";
-  enterNewIngredient.classList.add("return-to-ingredients");
-  enterNewIngredient.addEventListener("click", returnToIngredients);
-
-  mainContainer.appendChild(enterNewIngredient);
+  mainContainer.appendChild(createReturnLink());
   mainContainer.appendChild(recipeDiv);
 
   await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealID}`)
@@ -209,6 +199,16 @@ async function displayRecipe(event, mealID, recipeDiv) {
     .catch((error) => {
       console.log(error);
     });
+}
+
+function createReturnLink() {
+  const enterNewIngredient = document.createElement("p");
+  enterNewIngredient.innerText =
+    "Click here to go back and enter a new ingredient.";
+  enterNewIngredient.classList.add("return-to-ingredients");
+  enterNewIngredient.addEventListener("click", returnToIngredients);
+
+  return enterNewIngredient;
 }
 
 function returnToIngredients() {
