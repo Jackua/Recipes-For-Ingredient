@@ -26,15 +26,14 @@ enterIngredient.addEventListener("input", (event) => {
 });
 
 getRecipes.addEventListener("click", (event) => {
-  submitContainer.classList.remove("error", "empty", "invalid");
+  submitContainer.removeAttribute("class");
   if (enterIngredient.value === "") {
     submitContainer.classList.add("error", "empty");
   } else if (!ingredients.includes(enterIngredient.value)) {
     submitContainer.classList.add("error", "invalid");
   } else {
     recipesContainer.replaceChildren();
-    const converted = enterIngredient.value.toLowerCase().replaceAll(" ", "_");
-    fetchRecipes(converted);
+    fetchRecipes(enterIngredient.value.toLowerCase().replaceAll(" ", "_"));
   }
 });
 
@@ -141,8 +140,7 @@ async function displayRecipe(event, mealID, recipeDiv) {
   await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealID}`)
     .then((response) => {
       response.json().then((data) => {
-        const recipeInfoDiv = createRecipeInfoDiv(data.meals[0]);
-        mainContainer.appendChild(recipeInfoDiv);
+        mainContainer.appendChild(createRecipeInfoDiv(data.meals[0]));
         recipeDiv.children[1].style.display = "block";
       });
     })
