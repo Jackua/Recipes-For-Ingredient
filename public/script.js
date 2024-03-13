@@ -145,18 +145,9 @@ async function displayRecipe(event, mealID, recipeDiv) {
       response.json().then((data) => {
         const recipeInfo = data.meals[0];
         const ingredientsDiv = createIngredientsDiv(recipeInfo);
-        const instruction = document.createElement("div");
-        const instructionTitle = document.createElement("p");
-        instructionTitle.innerText = "Instructions: ";
-        const recipeInstruction = document.createElement("p");
-        recipeInstruction.innerText = recipeInfo.strInstructions;
-        instruction.appendChild(instructionTitle);
-        instruction.appendChild(recipeInstruction);
-        instruction.classList.add("instruction");
-
+        const instruction = createInstructionDiv(recipeInfo);
         const recipeInfoDiv = document.createElement("div");
         recipeInfoDiv.classList.add("recipe-info");
-        ingredientsDiv.classList.add("ingredient-list");
         recipeInfoDiv.appendChild(ingredientsDiv);
         recipeInfoDiv.appendChild(instruction);
         mainContainer.appendChild(recipeInfoDiv);
@@ -180,17 +171,13 @@ function createReturnLink() {
 
 function createIngredientsDiv(recipeInfo) {
   const recipeInfoList = Object.keys(recipeInfo);
-  const ingredientList = createList("ingredient", recipeInfoList, recipeInfo);
-  const measurementList = createList("measurement", recipeInfoList, recipeInfo);
+  const ingredients = createList("ingredient", recipeInfoList, recipeInfo);
+  const measurements = createList("measurement", recipeInfoList, recipeInfo);
   const ingredientsDiv = document.createElement("ul");
 
-  for (let index = 0; index < ingredientList.length; index++) {
-    const ingredient = recipeInfo[ingredientList[index]];
-    const measurement = recipeInfo[measurementList[index]];
-    const ingredientMeasurement = document.createElement("li");
-    ingredientMeasurement.innerText = `${ingredient} (${measurement})`;
-    ingredientsDiv.appendChild(ingredientMeasurement);
-  }
+  addListItems(ingredientsDiv, ingredients, measurements, recipeInfo);
+
+  ingredientsDiv.classList.add("ingredient-list");
 
   return ingredientsDiv;
 }
@@ -203,6 +190,33 @@ function createList(item, list, obj) {
     item === "ingredient" ? "strIngredient20" : "strMeasure20"
   );
   return list.slice(firstIndex, lastIndex).filter((item) => obj[item] !== "");
+}
+
+function addListItems(div, ingredients, measurements, recipeInfo) {
+  for (let index = 0; index < ingredients.length; index++) {
+    const ingredient = recipeInfo[ingredients[index]];
+    const measurement = recipeInfo[measurements[index]];
+    const ingredientMeasurement = document.createElement("li");
+    ingredientMeasurement.innerText = `${ingredient} (${measurement})`;
+    div.appendChild(ingredientMeasurement);
+  }
+
+  return div;
+}
+
+function createInstructionDiv(recipeInfo) {
+  const instruction = document.createElement("div");
+  const instructionTitle = document.createElement("p");
+  const recipeInstruction = document.createElement("p");
+
+  instructionTitle.innerText = "Instructions: ";
+  recipeInstruction.innerText = recipeInfo.strInstructions;
+
+  instruction.appendChild(instructionTitle);
+  instruction.appendChild(recipeInstruction);
+  instruction.classList.add("instruction");
+
+  return instruction;
 }
 
 function returnToIngredients() {
