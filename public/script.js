@@ -66,6 +66,21 @@ async function fetchRecipes(ingredient) {
     });
 }
 
+async function displayRecipe(event, mealID, recipeDiv) {
+  mainContainer.replaceChildren(createReturnLink(), recipeDiv);
+
+  await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealID}`)
+    .then((response) => {
+      response.json().then((data) => {
+        mainContainer.appendChild(createRecipeInfoDiv(data.meals[0]));
+        recipeDiv.children[1].style.display = "block";
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
 function checkForRecipes(recipes) {
   if (recipes === null) {
     submitContainer.classList.add("error", "null");
@@ -132,21 +147,6 @@ function createImageDiv(recipe) {
   });
 
   return imageDiv;
-}
-
-async function displayRecipe(event, mealID, recipeDiv) {
-  mainContainer.replaceChildren(createReturnLink(), recipeDiv);
-
-  await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealID}`)
-    .then((response) => {
-      response.json().then((data) => {
-        mainContainer.appendChild(createRecipeInfoDiv(data.meals[0]));
-        recipeDiv.children[1].style.display = "block";
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
 }
 
 function createReturnLink() {
