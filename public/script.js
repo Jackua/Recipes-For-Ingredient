@@ -136,20 +136,12 @@ function createImageDiv(recipe) {
 }
 
 async function displayRecipe(event, mealID, recipeDiv) {
-  mainContainer.replaceChildren();
-  mainContainer.appendChild(createReturnLink());
-  mainContainer.appendChild(recipeDiv);
+  mainContainer.replaceChildren(createReturnLink(), recipeDiv);
 
   await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealID}`)
     .then((response) => {
       response.json().then((data) => {
-        const recipeInfo = data.meals[0];
-        const ingredientsDiv = createIngredientsDiv(recipeInfo);
-        const instruction = createInstructionDiv(recipeInfo);
-        const recipeInfoDiv = document.createElement("div");
-        recipeInfoDiv.classList.add("recipe-info");
-        recipeInfoDiv.appendChild(ingredientsDiv);
-        recipeInfoDiv.appendChild(instruction);
+        const recipeInfoDiv = createRecipeInfoDiv(data.meals[0]);
         mainContainer.appendChild(recipeInfoDiv);
         recipeDiv.children[1].style.display = "block";
       });
@@ -164,7 +156,9 @@ function createReturnLink() {
   enterNewIngredient.innerText =
     "Click here to go back and enter a new ingredient.";
   enterNewIngredient.classList.add("return-to-ingredients");
-  enterNewIngredient.addEventListener("click", returnToIngredients);
+  enterNewIngredient.addEventListener("click", () => {
+    mainContainer.replaceChildren(submitContainer, recipesContainer);
+  });
 
   return enterNewIngredient;
 }
@@ -219,8 +213,15 @@ function createInstructionDiv(recipeInfo) {
   return instruction;
 }
 
-function returnToIngredients() {
-  mainContainer.replaceChildren();
-  mainContainer.appendChild(submitContainer);
-  mainContainer.appendChild(recipesContainer);
+function createRecipeInfoDiv(recipeInfo) {
+  const ingredientsDiv = createIngredientsDiv(recipeInfo);
+  const instruction = createInstructionDiv(recipeInfo);
+  const recipeInfoDiv = document.createElement("div");
+
+  recipeInfoDiv.classList.add("recipe-info");
+
+  recipeInfoDiv.appendChild(ingredientsDiv);
+  recipeInfoDiv.appendChild(instruction);
+
+  return recipeInfoDiv;
 }
