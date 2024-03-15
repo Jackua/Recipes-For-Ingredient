@@ -128,8 +128,8 @@ function createRecipeTitle(recipe) {
   recipeName.innerText = recipe.strMeal;
 
   recipeName.addEventListener("click", function (event) {
-    const recipeContainer = event.target.parentElement.parentElement;
-    displayRecipe(event, recipe.idMeal, recipeContainer);
+    const recipeDiv = event.target.parentElement.parentElement;
+    displayRecipe(event, recipe.idMeal, document.importNode(recipeDiv, true));
   });
 
   return recipeName;
@@ -142,8 +142,8 @@ function createImageDiv(recipe) {
   imageDiv.classList.add("recipe-image");
 
   imageDiv.addEventListener("click", function (event) {
-    const recipeContainer = event.target.parentElement;
-    displayRecipe(event, recipe.idMeal, recipeContainer);
+    const recipeDiv = event.target.parentElement;
+    displayRecipe(event, recipe.idMeal, document.importNode(recipeDiv, true));
   });
 
   return imageDiv;
