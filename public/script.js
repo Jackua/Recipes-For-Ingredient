@@ -37,9 +37,8 @@ getRecipes.addEventListener("click", (event) => {
   }
 });
 
-// Send the request to the backend to get data from my partner's microservice
 async function fetchIngredients() {
-  await fetch("/microservice/ingrediet")
+  await fetch("https://www.themealdb.com/api/json/v1/1/list.php?i=list")
     .then((response) => {
       response.json().then((data) => {
         ingredients = data.meals.map((meal) => meal.strIngredient);
